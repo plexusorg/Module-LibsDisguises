@@ -28,17 +28,17 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
-    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
-    compileOnly("dev.plex:server:1.5-SNAPSHOT")
-    implementation("me.libraryaddict.disguises:libsdisguises:10.0.44-SNAPSHOT")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.5.0")
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+    compileOnly("io.papermc.paper:paper-api:1.21.7-R0.1-SNAPSHOT")
+    compileOnly("dev.plex:server:1.5")
+    implementation("me.libraryaddict.disguises:libsdisguises:11.0.6")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.8.0")
 
 }
 
 group = "dev.plex"
-version = "1.5-SNAPSHOT"
+version = "1.5"
 description = "Module-LibsDisguises"
 
 java {

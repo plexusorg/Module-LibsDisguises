@@ -31,7 +31,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.46")
     annotationProcessor("org.projectlombok:lombok:1.18.46")
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
-    compileOnly("dev.plex:server:2.0-SNAPSHOT")
+    compileOnly("dev.plex:api:2.0-SNAPSHOT")
     implementation("me.libraryaddict.disguises:libsdisguises:11.0.18")
     compileOnly("com.github.retrooper:packetevents-spigot:2.12.1")
 }

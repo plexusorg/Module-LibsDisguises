@@ -1,9 +1,7 @@
 package dev.plex.listener;
 
 import dev.plex.LibsDisguises;
-import dev.plex.cache.DataUtils;
-import dev.plex.player.PlexPlayer;
-import dev.plex.util.PlexLog;
+import dev.plex.api.PlexApi;
 import java.util.ArrayList;
 import java.util.List;
 import me.libraryaddict.disguise.DisguiseAPI;
@@ -30,6 +28,13 @@ import org.bukkit.plugin.Plugin;
 
 public class DisguiseListener extends PlexListener
 {
+    private final PlexApi api;
+
+    public DisguiseListener(PlexApi api)
+    {
+        this.api = api;
+    }
+
     private static float safeYMod(float f)
     {
         return Math.max(-256f, Math.min(256f, f));
@@ -39,11 +44,7 @@ public class DisguiseListener extends PlexListener
     public void onDisguiseEvent(DisguiseEvent event)
     {
         event.setCancelled(true);
-        PlexPlayer plexPlayer = null;
-        if (event.getCommandSender() instanceof Player player)
-        {
-            plexPlayer = DataUtils.getPlayer(player.getUniqueId());
-        }
+        Player playerSender = event.getCommandSender() instanceof Player player ? player : null;
         if (event.getDisguise().getType() == DisguiseType.FISHING_HOOK)
         {
             event.getCommandSender().sendMessage(Component.text("You cannot use Fishing Hook disguises").color(NamedTextColor.RED));
@@ -68,7 +69,7 @@ public class DisguiseListener extends PlexListener
         {
             watcher.setInvulnerability(2048);
         }
-        if (event.getDisguise().isPlayerDisguise() && plexPlayer != null && !plexPlayer.getPlayer().hasPermission("plex.libsdisguises.player"))
+        if (event.getDisguise().isPlayerDisguise() && playerSender != null && !playerSender.hasPermission("plex.libsdisguises.player"))
         {
             PlayerDisguise playerDisguise = (PlayerDisguise)event.getDisguise();
             String targetName = playerDisguise.getName();
@@ -128,7 +129,6 @@ public class DisguiseListener extends PlexListener
             }
             else
             {
-                PlexPlayer plexPlayer = DataUtils.getPlayer(player.getUniqueId());
                 if (!player.hasPermission("plex.libsdisguises.bypass"))
                 {
                     DisguiseAPI.undisguiseToAll(player);
@@ -170,7 +170,7 @@ public class DisguiseListener extends PlexListener
                 commands.addAll(commandList);
             }
         }
-        PlexLog.log("Successfully fetched all LibsDisguises commands!");
+        api.logging().info("Successfully fetched all LibsDisguises commands!");
         return commands;
     }
 }

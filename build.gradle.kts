@@ -17,32 +17,31 @@ repositories {
     }
 
     maven {
-        url = uri("https://repo.dmulloy2.net/repository/public/")
+        url = uri("https://repo.codemc.io/repository/maven-releases/")
     }
 
     maven {
-        url = uri("https://repo.codemc.io/repository/maven-releases/")
+        url = uri("https://mvn.lib.co.nz/public")
     }
 
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.42")
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
-    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
-    compileOnly("dev.plex:server:1.6")
-    implementation("me.libraryaddict.disguises:libsdisguises:11.0.8")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.10.1")
-
+    compileOnly("org.projectlombok:lombok:1.18.46")
+    annotationProcessor("org.projectlombok:lombok:1.18.46")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("dev.plex:server:2.0-SNAPSHOT")
+    implementation("me.libraryaddict.disguises:libsdisguises:11.0.18")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.12.1")
 }
 
 group = "dev.plex"
-version = "1.6"
+version = "2.0"
 description = "Module-LibsDisguises"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 publishing {

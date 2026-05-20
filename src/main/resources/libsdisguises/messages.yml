@@ -1,0 +1,7 @@
+disguisesEnabled: "<aqua>{0} - Enabling LibsDisguises"
+disguisesDisabled: "<red>{0} - Disabling LibsDisguises"
+undisguiseAllNonAdmins: "<red>{0} - Undisguising all non-admins"
+undisguiseAllPlayers: "<red>{0} - Undisguising all players"
+fishingHookDisguiseDenied: "<red>You cannot use Fishing Hook disguises"
+disguiseNameTooLong: "<red>Your disguise name is too long"
+libsDisguisesCurrentlyDisabled: "<red>LibsDisguises is currently disabled."

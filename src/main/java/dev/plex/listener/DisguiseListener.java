@@ -1,7 +1,6 @@
 package dev.plex.listener;
 
 import dev.plex.LibsDisguises;
-import dev.plex.api.PlexApi;
 import java.util.ArrayList;
 import java.util.List;
 import me.libraryaddict.disguise.DisguiseAPI;
@@ -13,8 +12,6 @@ import me.libraryaddict.disguise.disguisetypes.watchers.PhantomWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.SlimeWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.WitherWatcher;
 import me.libraryaddict.disguise.events.DisguiseEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -28,11 +25,11 @@ import org.bukkit.plugin.Plugin;
 
 public class DisguiseListener extends PlexListener
 {
-    private final PlexApi api;
+    private final LibsDisguises module;
 
-    public DisguiseListener(PlexApi api)
+    public DisguiseListener(LibsDisguises module)
     {
-        this.api = api;
+        this.module = module;
     }
 
     private static float safeYMod(float f)
@@ -47,7 +44,7 @@ public class DisguiseListener extends PlexListener
         Player playerSender = event.getCommandSender() instanceof Player player ? player : null;
         if (event.getDisguise().getType() == DisguiseType.FISHING_HOOK)
         {
-            event.getCommandSender().sendMessage(Component.text("You cannot use Fishing Hook disguises").color(NamedTextColor.RED));
+            event.getCommandSender().sendMessage(module.messageComponent("fishingHookDisguiseDenied"));
             return;
         }
         String name = event.getDisguise().getWatcher().getCustomName();
@@ -57,7 +54,7 @@ public class DisguiseListener extends PlexListener
             // each color code counts as one char rather than two, for flexibility
             if (((name.length() - noColorLen) / 2) + noColorLen > 32)
             {
-                event.getCommandSender().sendMessage(Component.text("Your disguise name is too long").color(NamedTextColor.RED));
+                event.getCommandSender().sendMessage(module.messageComponent("disguiseNameTooLong"));
                 return;
             }
         }
@@ -151,7 +148,7 @@ public class DisguiseListener extends PlexListener
                 {
                     if (message.equalsIgnoreCase(command.getName()) || message.equalsIgnoreCase(commandAliases))
                     {
-                        event.getPlayer().sendMessage(Component.text("LibsDisguises is currently disabled.").color(NamedTextColor.RED));
+                        event.getPlayer().sendMessage(module.messageComponent("libsDisguisesCurrentlyDisabled"));
                         event.setCancelled(true);
                         break;
                     }
@@ -170,7 +167,7 @@ public class DisguiseListener extends PlexListener
                 commands.addAll(commandList);
             }
         }
-        api.logging().info("Successfully fetched all LibsDisguises commands!");
+        module.api().logging().info("Successfully fetched all LibsDisguises commands!");
         return commands;
     }
 }

@@ -12,6 +12,12 @@ public class LibsDisguises extends PlexModule
     DisguiseListener disguiseListener;
 
     @Override
+    public void load()
+    {
+        loadMessages("libsdisguises/messages.yml");
+    }
+
+    @Override
     public void enable()
     {
         if (!Bukkit.getPluginManager().isPluginEnabled("LibsDisguises"))
@@ -21,7 +27,7 @@ public class LibsDisguises extends PlexModule
         }
         registerCommand(new DisguiseToggleCMD());
         registerCommand(new UndisguiseAllCMD());
-        disguiseListener = new DisguiseListener(api());
+        disguiseListener = new DisguiseListener(this);
         disguiseListener.getCommands();
         registerListener(disguiseListener);
     }

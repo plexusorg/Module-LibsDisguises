@@ -13,23 +13,27 @@ import org.jetbrains.annotations.Nullable;
 
 public class DisguiseToggleCMD extends SimplePlexCommand
 {
-    public DisguiseToggleCMD()
+    private final LibsDisguises module;
+
+    public DisguiseToggleCMD(LibsDisguises module)
     {
         super(command("disguisetoggle")
                 .description("Toggle LibsDisguises")
                 .aliases("dtoggle")
                 .permission("plex.libsdisguises.disguisetoggle")
                 .build());
+        this.module = module;
     }
+
     @Override
     protected Component execute(@NotNull CommandSender commandSender, @Nullable Player player, @NotNull String[] strings)
     {
-        LibsDisguises.enabled = !LibsDisguises.enabled;
-        if (!LibsDisguises.enabled)
+        module.setEnabled(!module.isEnabled());
+        if (!module.isEnabled())
         {
             Bukkit.getServer().getPluginManager().callEvent(new UndisguiseEvent(true));
         }
-        broadcast(messageComponent(LibsDisguises.enabled ? "disguisesEnabled" : "disguisesDisabled", commandSender.getName()));
+        broadcast(messageComponent(module.isEnabled() ? "disguisesEnabled" : "disguisesDisabled", commandSender.getName()));
         return null;
     }
 

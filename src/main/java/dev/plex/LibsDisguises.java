@@ -8,7 +8,7 @@ import org.bukkit.Bukkit;
 
 public class LibsDisguises extends PlexModule
 {
-    public static boolean enabled = true;
+    private boolean enabled = true;
     DisguiseListener disguiseListener;
 
     @Override
@@ -25,7 +25,7 @@ public class LibsDisguises extends PlexModule
             api().logging().error("The Plex-LibsDisguises module requires the LibsDisguises plugin to work.");
             return;
         }
-        registerCommand(new DisguiseToggleCMD());
+        registerCommand(new DisguiseToggleCMD(this));
         registerCommand(new UndisguiseAllCMD());
         disguiseListener = new DisguiseListener(this);
         disguiseListener.getCommands();
@@ -36,5 +36,15 @@ public class LibsDisguises extends PlexModule
     public void disable()
     {
         // Unregistering listeners / commands is handled by Plex
+    }
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 }

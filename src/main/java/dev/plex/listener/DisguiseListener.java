@@ -140,7 +140,7 @@ public class DisguiseListener extends PlexListener
         String message = event.getMessage();
         // Don't check the arguments
         message = message.replaceAll("\\s.*", "").replaceFirst("/", "");
-        if (!LibsDisguises.enabled)
+        if (!module.isEnabled())
         {
             for (Command command : commands)
             {

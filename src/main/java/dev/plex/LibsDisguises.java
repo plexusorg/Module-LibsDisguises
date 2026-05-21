@@ -15,6 +15,8 @@ public class LibsDisguises extends PlexModule
     public void load()
     {
         loadMessages("libsdisguises/messages.yml");
+        registerCommand(new DisguiseToggleCMD(this));
+        registerCommand(new UndisguiseAllCMD());
     }
 
     @Override
@@ -25,8 +27,6 @@ public class LibsDisguises extends PlexModule
             api().logging().error("The Plex-LibsDisguises module requires the LibsDisguises plugin to work.");
             return;
         }
-        registerCommand(new DisguiseToggleCMD(this));
-        registerCommand(new UndisguiseAllCMD());
         disguiseListener = new DisguiseListener(this);
         disguiseListener.getCommands();
         registerListener(disguiseListener);

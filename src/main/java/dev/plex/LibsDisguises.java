@@ -14,7 +14,7 @@ public class LibsDisguises extends PlexModule
     @Override
     public void load()
     {
-        loadMessages("libsdisguises/messages.yml");
+        loadMessages("messages.yml");
         registerCommand(new DisguiseToggleCMD(this));
         registerCommand(new UndisguiseAllCMD());
     }

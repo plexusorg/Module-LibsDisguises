@@ -31,6 +31,7 @@ public class DisguiseListener implements Listener
     public DisguiseListener(LibsDisguises module)
     {
         this.module = module;
+        loadCommands();
     }
 
     private static float safeYMod(float f)
@@ -158,7 +159,7 @@ public class DisguiseListener implements Listener
         }
     }
 
-    public List<Command> getCommands()
+    private void loadCommands()
     {
         for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
         {
@@ -169,6 +170,5 @@ public class DisguiseListener implements Listener
             }
         }
         module.api().logging().info("Successfully fetched all LibsDisguises commands!");
-        return commands;
     }
 }

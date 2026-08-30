@@ -28,7 +28,6 @@ public class LibsDisguises extends PlexModule
             return;
         }
         disguiseListener = new DisguiseListener(this);
-        disguiseListener.getCommands();
         registerListener(disguiseListener);
     }
 

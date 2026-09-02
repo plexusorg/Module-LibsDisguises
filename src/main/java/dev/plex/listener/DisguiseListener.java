@@ -120,20 +120,15 @@ public class DisguiseListener implements Listener
     @EventHandler
     public void onDisguiseToggle(UndisguiseEvent event)
     {
-        for (Player player : Bukkit.getOnlinePlayers())
-        {
-            if (event.isUndisguiseAdmins())
-            {
-                DisguiseAPI.undisguiseToAll(player);
-            }
-            else
-            {
-                if (!player.hasPermission("plex.libsdisguises.bypass"))
+        boolean undisguiseAdmins = event.isUndisguiseAdmins();
+        Bukkit.getOnlinePlayers().forEach(player ->
+                module.scheduler().runEntity(player, () ->
                 {
-                    DisguiseAPI.undisguiseToAll(player);
-                }
-            }
-        }
+                    if (undisguiseAdmins || !player.hasPermission("plex.libsdisguises.bypass"))
+                    {
+                        DisguiseAPI.undisguiseToAll(player);
+                    }
+                }));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

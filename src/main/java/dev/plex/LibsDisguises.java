@@ -24,8 +24,7 @@ public class LibsDisguises extends PlexModule
     {
         if (!Bukkit.getPluginManager().isPluginEnabled("LibsDisguises"))
         {
-            api().logging().error("The Plex-LibsDisguises module requires the LibsDisguises plugin to work.");
-            return;
+            throw new IllegalStateException("The Plex-LibsDisguises module requires the LibsDisguises plugin to work.");
         }
         disguiseListener = new DisguiseListener(this);
         registerListener(disguiseListener);

@@ -3,7 +3,6 @@ package dev.plex.listener;
 import dev.plex.LibsDisguises;
 import java.util.ArrayList;
 import java.util.List;
-import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.AreaEffectCloudWatcher;
@@ -28,10 +27,11 @@ public class DisguiseListener implements Listener
 {
     private final LibsDisguises module;
 
-    public DisguiseListener(LibsDisguises module)
+    public DisguiseListener(LibsDisguises module, Plugin dependency)
     {
         this.module = module;
-        loadCommands();
+        commands.addAll(PluginCommandYamlParser.parse(dependency));
+        module.api().logging().info("Successfully fetched all LibsDisguises commands!");
     }
 
     private static float safeYMod(float f)
@@ -40,10 +40,11 @@ public class DisguiseListener implements Listener
     }
 
     @EventHandler
+    // The decisions are the complete ordered safety policy for one disguise operation.
+    @SuppressWarnings("checkstyle:CyclomaticComplexity")
     public void onDisguiseEvent(DisguiseEvent event)
     {
         event.setCancelled(true);
-        Player playerSender = event.getCommandSender() instanceof Player player ? player : null;
         if (event.getDisguise().getType() == DisguiseType.FISHING_HOOK)
         {
             event.getCommandSender().sendMessage(module.messageComponent("fishingHookDisguiseDenied"));
@@ -68,7 +69,9 @@ public class DisguiseListener implements Listener
         {
             watcher.setInvulnerability(2048);
         }
-        if (event.getDisguise().isPlayerDisguise() && playerSender != null && !playerSender.hasPermission("plex.libsdisguises.player"))
+        if (event.getDisguise().isPlayerDisguise()
+                && event.getCommandSender() instanceof Player playerSender
+                && !playerSender.hasPermission("plex.libsdisguises.player"))
         {
             PlayerDisguise playerDisguise = (PlayerDisguise)event.getDisguise();
             String targetName = playerDisguise.getName();
@@ -117,53 +120,22 @@ public class DisguiseListener implements Listener
 
     final List<Command> commands = new ArrayList<>();
 
-    @EventHandler
-    public void onDisguiseToggle(UndisguiseEvent event)
-    {
-        boolean undisguiseAdmins = event.isUndisguiseAdmins();
-        Bukkit.getOnlinePlayers().forEach(player ->
-                module.scheduler().runEntity(player, () ->
-                {
-                    if (undisguiseAdmins || !player.hasPermission("plex.libsdisguises.bypass"))
-                    {
-                        DisguiseAPI.undisguiseToAll(player);
-                    }
-                }));
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
     {
         String message = event.getMessage();
         // Don't check the arguments
-        message = message.replaceAll("\\s.*", "").replaceFirst("/", "");
+        String commandLabel = message.replaceAll("\\s.*", "").replaceFirst("/", "");
         if (!module.isEnabled())
         {
-            for (Command command : commands)
+            boolean disguiseCommand = commands.stream().anyMatch(command ->
+                    command.getName().equalsIgnoreCase(commandLabel)
+                            || command.getAliases().stream().anyMatch(alias -> alias.equalsIgnoreCase(commandLabel)));
+            if (disguiseCommand)
             {
-                for (String commandAliases : command.getAliases())
-                {
-                    if (message.equalsIgnoreCase(command.getName()) || message.equalsIgnoreCase(commandAliases))
-                    {
-                        event.getPlayer().sendMessage(module.messageComponent("libsDisguisesCurrentlyDisabled"));
-                        event.setCancelled(true);
-                        break;
-                    }
-                }
+                event.getPlayer().sendMessage(module.messageComponent("libsDisguisesCurrentlyDisabled"));
+                event.setCancelled(true);
             }
         }
-    }
-
-    private void loadCommands()
-    {
-        for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
-        {
-            if (plugin.getName().equals("LibsDisguises"))
-            {
-                List<Command> commandList = PluginCommandYamlParser.parse(plugin);
-                commands.addAll(commandList);
-            }
-        }
-        module.api().logging().info("Successfully fetched all LibsDisguises commands!");
     }
 }

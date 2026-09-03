@@ -1,5 +1,6 @@
 plugins {
     java
+    checkstyle
     `maven-publish`
 }
 
@@ -38,6 +39,11 @@ dependencies {
 
 group = "dev.plex"
 version = "2.0-SNAPSHOT"
+
+checkstyle {
+    toolVersion = "14.1.0"
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+}
 description = "Module-LibsDisguises"
 
 java {

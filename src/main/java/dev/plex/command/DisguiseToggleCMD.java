@@ -1,11 +1,11 @@
 package dev.plex.command;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.plex.LibsDisguises;
-import dev.plex.listener.UndisguiseEvent;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.Collections;
 import java.util.List;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -26,20 +26,21 @@ public class DisguiseToggleCMD extends SimplePlexCommand
     }
 
     @Override
-    protected Component execute(@NotNull CommandSender commandSender, @Nullable Player player, @NotNull String[] strings)
+    protected void configureCommand(LiteralArgumentBuilder<CommandSourceStack> command)
+    {
+        command.executes(context -> executeCommand(context, (sender, player) -> toggle(sender)));
+        command.then(greedyString("ignored").executes(context -> executeCommand(context, (sender, player) -> toggle(sender))));
+    }
+
+    private Component toggle(CommandSender commandSender)
     {
         module.setEnabled(!module.isEnabled());
         if (!module.isEnabled())
         {
-            Bukkit.getServer().getPluginManager().callEvent(new UndisguiseEvent(true));
+            module.undisguiseAll(true);
         }
         broadcast(messageComponent(module.isEnabled() ? "disguisesEnabled" : "disguisesDisabled", commandSender.getName()));
         return null;
     }
 
-    @Override
-    protected @NotNull List<String> suggestions(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException
-    {
-        return Collections.emptyList();
-    }
 }

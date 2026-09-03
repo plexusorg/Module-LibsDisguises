@@ -1,12 +1,13 @@
 package dev.plex;
 
+import org.bukkit.Bukkit;
+
 import dev.plex.command.DisguiseToggleCMD;
 import dev.plex.command.UndisguiseAllCMD;
 import dev.plex.listener.DisguiseListener;
 import dev.plex.module.PlexModule;
 import java.util.List;
 import me.libraryaddict.disguise.DisguiseAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -53,18 +54,18 @@ public class LibsDisguises extends PlexModule
 
     public void undisguiseAll(boolean includeBypass)
     {
-        scheduler().runGlobal(() ->
+        ownTask(Bukkit.getGlobalRegionScheduler().run(plugin(), globalTask ->
         {
             for (Player player : List.copyOf(Bukkit.getOnlinePlayers()))
             {
-                scheduler().runEntity(player, () ->
+                ownTask(player.getScheduler().run(plugin(), entityTask ->
                 {
                     if (includeBypass || !player.hasPermission("plex.libsdisguises.bypass"))
                     {
                         DisguiseAPI.undisguiseToAll(player);
                     }
-                });
+                }, null));
             }
-        });
+        }));
     }
 }

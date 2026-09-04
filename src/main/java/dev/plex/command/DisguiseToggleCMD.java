@@ -1,5 +1,7 @@
 package dev.plex.command;
 
+import static dev.plex.api.message.MessagePlaceholder.placeholder;
+
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.plex.LibsDisguises;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -39,7 +41,7 @@ public class DisguiseToggleCMD extends SimplePlexCommand
         {
             module.undisguiseAll(true);
         }
-        broadcast(messageComponent(module.isEnabled() ? "disguisesEnabled" : "disguisesDisabled", commandSender.getName()));
+        broadcast(messageComponent(module.isEnabled() ? "disguisesEnabled" : "disguisesDisabled", placeholder("player", commandSender.getName())));
         return null;
     }
 

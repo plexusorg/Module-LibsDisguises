@@ -1,5 +1,7 @@
 package dev.plex.command;
 
+import static dev.plex.api.message.MessagePlaceholder.placeholder;
+
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.plex.LibsDisguises;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -40,13 +42,13 @@ public class UndisguiseAllCMD extends SimplePlexCommand
         if (flag == null)
         {
             module.undisguiseAll(false);
-            broadcast(messageComponent("undisguiseAllNonAdmins", sender.getName()));
+            broadcast(messageComponent("undisguiseAllNonAdmins", placeholder("player", sender.getName())));
             return null;
         }
         else if (flag.equalsIgnoreCase("-a"))
         {
             module.undisguiseAll(true);
-            broadcast(messageComponent("undisguiseAllPlayers", sender.getName()));
+            broadcast(messageComponent("undisguiseAllPlayers", placeholder("player", sender.getName())));
             return null;
         }
         return usage();

@@ -1,13 +1,12 @@
 package dev.plex.command;
 
-import static dev.plex.api.message.MessagePlaceholder.placeholder;
-
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.plex.LibsDisguises;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.Collections;
 import java.util.List;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -42,13 +41,13 @@ public class UndisguiseAllCMD extends SimplePlexCommand
         if (flag == null)
         {
             module.undisguiseAll(false);
-            broadcast(messageComponent("undisguiseAllNonAdmins", placeholder("player", sender.getName())));
+            broadcast(messageComponent("undisguiseAllNonAdmins", Placeholder.parsed("player", sender.getName())));
             return null;
         }
         else if (flag.equalsIgnoreCase("-a"))
         {
             module.undisguiseAll(true);
-            broadcast(messageComponent("undisguiseAllPlayers", placeholder("player", sender.getName())));
+            broadcast(messageComponent("undisguiseAllPlayers", Placeholder.parsed("player", sender.getName())));
             return null;
         }
         return usage();

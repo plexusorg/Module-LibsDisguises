@@ -2,6 +2,7 @@ package dev.plex.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.plex.LibsDisguises;
+import dev.plex.api.message.ActionBroadcast;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import java.util.Collections;
 import java.util.List;
@@ -40,14 +41,16 @@ public class UndisguiseAllCMD extends SimplePlexCommand
     {
         if (flag == null)
         {
+            ActionBroadcast announcement = api().messages().captureActionBroadcast(sender);
             module.undisguiseAll(false);
-            broadcast(messageComponent("undisguiseAllNonAdmins", Placeholder.parsed("player", sender.getName())));
+            announcement.send(messageComponent("undisguiseAllNonAdmins", Placeholder.parsed("player", sender.getName())));
             return null;
         }
         else if (flag.equalsIgnoreCase("-a"))
         {
+            ActionBroadcast announcement = api().messages().captureActionBroadcast(sender);
             module.undisguiseAll(true);
-            broadcast(messageComponent("undisguiseAllPlayers", Placeholder.parsed("player", sender.getName())));
+            announcement.send(messageComponent("undisguiseAllPlayers", Placeholder.parsed("player", sender.getName())));
             return null;
         }
         return usage();

@@ -11,7 +11,9 @@ import me.libraryaddict.disguise.disguisetypes.watchers.PhantomWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.SlimeWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.WitherWatcher;
 import me.libraryaddict.disguise.events.DisguiseEvent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import me.libraryaddict.disguise.utilities.DisguiseUtilities;
+import net.kyori.adventure.text.ObjectComponent;
+import net.kyori.adventure.text.flattener.ComponentFlattener;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -25,6 +27,10 @@ import org.bukkit.plugin.Plugin;
 
 public class DisguiseListener implements Listener
 {
+    private static final PlainTextComponentSerializer NAME_TEXT = PlainTextComponentSerializer.builder()
+            .flattener(ComponentFlattener.basic().toBuilder().mapper(ObjectComponent.class, component -> "\uFFFC").build())
+            .build();
+
     private final LibsDisguises module;
 
     public DisguiseListener(LibsDisguises module, Plugin dependency)
@@ -53,9 +59,8 @@ public class DisguiseListener implements Listener
         String name = event.getDisguise().getWatcher().getCustomName();
         if (name != null)
         {
-            int noColorLen = PlainTextComponentSerializer.plainText().serialize(LegacyComponentSerializer.legacySection().deserialize(name)).length();
-            // each color code counts as one char rather than two, for flexibility
-            if (((name.length() - noColorLen) / 2) + noColorLen > 32)
+            String visibleName = NAME_TEXT.serialize(DisguiseUtilities.getAdventureChat(name));
+            if (visibleName.codePointCount(0, visibleName.length()) > 32)
             {
                 event.getCommandSender().sendMessage(module.messageComponent("disguiseNameTooLong"));
                 return;

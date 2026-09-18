@@ -27,6 +27,7 @@ import org.bukkit.plugin.Plugin;
 
 public class DisguiseListener implements Listener
 {
+    // Count a head or sprite once, not by the length of its plain-text fallback.
     private static final PlainTextComponentSerializer NAME_TEXT = PlainTextComponentSerializer.builder()
             .flattener(ComponentFlattener.basic().toBuilder().mapper(ObjectComponent.class, component -> "\uFFFC").build())
             .build();

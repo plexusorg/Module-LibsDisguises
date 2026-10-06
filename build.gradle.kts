@@ -38,7 +38,7 @@ dependencies {
 }
 
 group = "dev.plex"
-version = "2.0"
+version = "2.0.1-SNAPSHOT"
 
 checkstyle {
     toolVersion = "14.3.0"

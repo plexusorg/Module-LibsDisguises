@@ -33,7 +33,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.48")
     compileOnly("io.papermc.paper:paper-api:26.2.build.+")
     compileOnly("dev.plex:api:2.0")
-    implementation("me.libraryaddict.disguises:libsdisguises:26.9.26")
+    implementation("me.libraryaddict.disguises:libsdisguises:26.11.10")
     compileOnly("com.github.retrooper:packetevents-spigot:2.14.0")
 }
 
@@ -41,7 +41,7 @@ group = "dev.plex"
 version = "2.0.1-SNAPSHOT"
 
 checkstyle {
-    toolVersion = "14.3.0"
+    toolVersion = "14.4.0"
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
 }
 description = "Module-LibsDisguises"
